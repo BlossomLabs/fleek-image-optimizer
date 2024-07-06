@@ -1,4 +1,4 @@
 declare module "*.wasm" {
-    const value: any;
-    export default value;
-  }
+  const value: () => Promise<WebAssembly.Module>;
+  export default value;
+}

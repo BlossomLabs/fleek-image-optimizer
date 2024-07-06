@@ -30,12 +30,12 @@ export async function main(params: RequestObject) {
       url = url.slice(0, -1);
     }
     const w: number | undefined = query?.w
-      ? parseInt(String(query?.w))
+      ? Number.parseInt(String(query?.w))
       : undefined;
 
     check(method !== "GET", 405, "Method Not Allowed");
     check(!url, 400, "Invalid URL");
-    check(w !== undefined && isNaN(w), 400, "Invalid width");
+    check(w !== undefined && Number.isNaN(w), 400, "Invalid width");
 
     const response = await fetch(url);
 
@@ -52,7 +52,7 @@ export async function main(params: RequestObject) {
     const image = await response.arrayBuffer();
     console.log(`Image type: ${contentType}`);
 
-    const fromFormat = contentType!.split("/")[1];
+    const fromFormat = contentType?.split("/")[1] || "";
 
     const acceptsAvif = headers?.accept?.includes("image/avif") && false; // TODO Add support in the future
     const acceptsWebp = headers?.accept?.includes("image/webp");
@@ -76,14 +76,17 @@ export async function main(params: RequestObject) {
     );
 
     const processed =
-      w != undefined && w !== decoded.width
+      w !== undefined && w !== decoded.width
         ? await resizeImage(decoded, w)
         : decoded;
     console.log(
       `Resized image dimensions: ${processed.height}x${processed.width}`,
     );
 
-    const encoded = await encodeImage(processed, toFormat as (typeof availableOutFormats)[number]);
+    const encoded = await encodeImage(
+      processed,
+      toFormat as (typeof availableOutFormats)[number],
+    );
     console.log(
       `Original image size: ${image.byteLength.toLocaleString()} bytes`,
     );
