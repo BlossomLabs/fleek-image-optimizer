@@ -16,7 +16,9 @@ type Check = (condition: boolean, status: number, message: string) => void;
 export async function optimize(params: Params, check: Check) {
   const { url, width, acceptsWebp, forceAvif } = params;
 
-  const response = await fetch(url);
+  const response = await fetch(url).catch(() => {
+    throw { status: 502, message: `Failed to fetch image: ${url}` };
+  });
 
   check(!response.ok, 502, `Failed to fetch image: ${url}`);
 
