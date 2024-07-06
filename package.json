@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc && rollup -c",
     "create-func": "fleek functions create --name",
-    "deploy-func": "fleek functions deploy --path dist/main.js --name",
+    "deploy-func": "fleek functions deploy --noBundle --path dist/main.js --name",
     "lint": "biome check --write && biome format --write && biome lint --write"
   },
   "devDependencies": {

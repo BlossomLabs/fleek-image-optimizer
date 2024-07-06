@@ -8,6 +8,7 @@ export default {
     dir: "dist",
     format: "es",
     inlineDynamicImports: true,
+    banner: 'import { Buffer } from "node:buffer";'
   },
   plugins: [
     nodeResolve(), // Needed to bundle the assets from node_modules
