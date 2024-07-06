@@ -14,7 +14,7 @@ type RequestObject = {
 
 export async function main(params: RequestObject) {
   try {
-    return optimize(processParams(params), check)
+    return optimize(processParams(params), check);
   } catch (error) {
     if (isErrorWithStatusAndBody(error)) {
       return error;
@@ -67,7 +67,8 @@ function processParams(params: RequestObject) {
     ? Number.parseInt(String(query?.w))
     : undefined;
 
-  const to: string | undefined = query?.to && !Array.isArray(query?.to) ? query?.to : undefined;
+  const to: string | undefined =
+    query?.to && !Array.isArray(query?.to) ? query?.to : undefined;
 
   check(method !== "GET", 405, "Method Not Allowed");
   check(!url, 400, "Invalid URL");

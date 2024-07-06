@@ -26,10 +26,10 @@ If the `to` parameter is not provided, it will check the image types accepted by
 **Example:**
 
 ```
-https://image-optimizer.functions.on-fleek.app/https://cloudinary-marketing-res.cloudinary.com/image/upload/landmannalaugar_iceland.jpg/?w=2000
+https://image-optimizer.functions.on-fleek.app/https://cloudinary-marketing-res.cloudinary.com/image/upload/landmannalaugar_iceland.jpg/?w=500
 ```
 
-It converts a 18 MB PNG image to a 211 KB AVIF image and delivers it as a response.
+It converts a 18 MB PNG image to a 20 KB AVIF image and delivers it as a response.
 
 ## Installation and Usage
 

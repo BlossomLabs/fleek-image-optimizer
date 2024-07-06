@@ -21,7 +21,8 @@ export async function optimize(params: Params, check: Check) {
   it to the best format available
   */
   check(
-    to !== undefined && !supportedOutputTypes.includes(to as SupportedOutputType),
+    to !== undefined &&
+      !supportedOutputTypes.includes(to as SupportedOutputType),
     400,
     `Invalid to param type, only ${supportedOutputTypes.join(
       ", ",
@@ -46,7 +47,8 @@ export async function optimize(params: Params, check: Check) {
   console.log(`Image type: ${contentType}`);
 
   const fromFormat = contentType?.split("/")[1] || "";
-  const toFormat = to || (acceptsAvif ? "avif" : acceptsWebp ? "webp" : fromFormat);
+  const toFormat =
+    to || (acceptsAvif ? "avif" : acceptsWebp ? "webp" : fromFormat);
 
   // If we can't decode or re-encode the image, it is better to return it without modifications
   if (
@@ -75,9 +77,11 @@ export async function optimize(params: Params, check: Check) {
     `Encoded image size:  ${encoded.byteLength.toLocaleString()} bytes`,
   );
   console.log(
-    `Improvement: ~${Math.round(
-      ((image.byteLength - encoded.byteLength) / image.byteLength) * 100,
-    )}%`,
+    `Improvement: ~${
+      Math.floor(
+        ((image.byteLength - encoded.byteLength) / image.byteLength) * 10000,
+      ) / 100
+    }%`,
   );
   return encoded;
 }
