@@ -14,9 +14,7 @@ type RequestObject = {
 
 export async function main(params: RequestObject) {
   try {
-    const { url, width, acceptsAvif, acceptsWebp, forceAvif } =
-      processParams(params);
-    return optimize({ url, width, acceptsAvif, acceptsWebp, forceAvif }, check);
+    return optimize(processParams(params), check)
   } catch (error) {
     if (isErrorWithStatusAndBody(error)) {
       return error;
@@ -69,7 +67,7 @@ function processParams(params: RequestObject) {
     ? Number.parseInt(String(query?.w))
     : undefined;
 
-  const forceAvif: boolean = query?.avif === "true" || false;
+  const to: string | undefined = query?.to && !Array.isArray(query?.to) ? query?.to : undefined;
 
   check(method !== "GET", 405, "Method Not Allowed");
   check(!url, 400, "Invalid URL");
@@ -77,5 +75,5 @@ function processParams(params: RequestObject) {
 
   const acceptsAvif = headers?.accept?.includes("image/avif") || false;
   const acceptsWebp = headers?.accept?.includes("image/webp") || false;
-  return { url, width, acceptsAvif, acceptsWebp, forceAvif };
+  return { url, width, acceptsAvif, acceptsWebp, to };
 }

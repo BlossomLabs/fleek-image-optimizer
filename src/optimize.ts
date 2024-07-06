@@ -9,12 +9,24 @@ type Params = {
   width?: number;
   acceptsAvif: boolean;
   acceptsWebp: boolean;
-  forceAvif: boolean;
+  to?: string;
 };
 type Check = (condition: boolean, status: number, message: string) => void;
 
 export async function optimize(params: Params, check: Check) {
-  const { url, width, acceptsWebp, forceAvif } = params;
+  const { url, width, acceptsWebp, acceptsAvif, to } = params;
+
+  /* If we can't encode the image to the requested format, we return an error.
+  It only happens when `to` is defined, if it is undefined we try to convert
+  it to the best format available
+  */
+  check(
+    to !== undefined && !supportedOutputTypes.includes(to as SupportedOutputType),
+    400,
+    `Invalid to param type, only ${supportedOutputTypes.join(
+      ", ",
+    )} are supported`,
+  );
 
   const response = await fetch(url).catch(() => {
     throw { status: 502, message: `Failed to fetch image: ${url}` };
@@ -34,7 +46,7 @@ export async function optimize(params: Params, check: Check) {
   console.log(`Image type: ${contentType}`);
 
   const fromFormat = contentType?.split("/")[1] || "";
-  const toFormat = forceAvif ? "avif" : acceptsWebp ? "webp" : fromFormat;
+  const toFormat = to || (acceptsAvif ? "avif" : acceptsWebp ? "webp" : fromFormat);
 
   // If we can't decode or re-encode the image, it is better to return it without modifications
   if (
