@@ -1,0 +1,29 @@
+{
+  "name": "fleek-image-optimizer",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "main": "./src/main.ts",
+  "scripts": {
+    "build": "tsc && rollup -c",
+    "create-func": "fleek functions create --name",
+    "deploy-func": "fleek functions deploy --path dist/main.js --name"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "@rollup/plugin-wasm": "^6.2.2",
+    "@web/rollup-plugin-import-meta-assets": "^1.0.7",
+    "rollup": "^2.60.0",
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "@jsquash/avif": "^1.1.0",
+    "@jsquash/jpeg": "^1.2.0",
+    "@jsquash/jxl": "^1.0.0",
+    "@jsquash/png": "^2.0.0",
+    "@jsquash/resize": "^2.0.0",
+    "@jsquash/webp": "^1.2.0"
+  },
+  "license": "MIT"
+}
