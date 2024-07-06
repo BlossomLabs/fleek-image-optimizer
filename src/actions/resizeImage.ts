@@ -9,7 +9,7 @@ export async function resizeImage(decoded: ImageData, width: number) {
   );
   const processed = await resize(decoded, {
     width,
-    height: width * aspectRatio,
+    height: Math.round(width * aspectRatio),
   });
   return processed;
 }
