@@ -47,8 +47,9 @@ export async function optimize(params: Params, check: Check) {
   console.log(`Image type: ${contentType}`);
 
   const fromFormat = contentType?.split("/")[1] || "";
+  // We prioritize WebP over AVIF because our support for WebP is better
   const toFormat =
-    to || (acceptsAvif ? "avif" : acceptsWebp ? "webp" : fromFormat);
+    to || (acceptsWebp ? "webp" : acceptsAvif ? "avif" : fromFormat);
 
   // If we can't decode or re-encode the image, it is better to return it without modifications
   if (

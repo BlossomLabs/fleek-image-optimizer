@@ -4,12 +4,22 @@
 
 Fleek Image Optimizer is a tool designed to enhance images for web delivery. It supports various image formats and provides functionalities to resize and re-encode images into more efficient formats like AVIF and WebP.
 
-## Features
+## Similar (propertary) services
+These are all services that allow image optimization among other features.
+- [Cloudinary](https://cloudinary.com/developers)
+- [Imagekit](https://imagekit.io/docs/overview)
+- [Imgix](https://www.imgix.com/solutions/compression-and-performance)
+- [Akami](https://techdocs.akamai.com/ivm/docs/optimize-images)
 
-- **Parameter Processing**: Accepts image URLs, along with optional width and output type parameters from the query string.
-- **Image Decoding**: Supports decoding of PNG, JPEG, WebP, and AVIF formats.
-- **Image Resizing**: Allows resizing images while maintaining their aspect ratio.
-- **Image Encoding**: Capable of encoding images to WebP and AVIF formats.
+## Optimizing images in Fleek
+
+A very interesting resource for image optimization that uses WebAssembly and browser technologies is [Squoosh.app](https://squoosh.app) from Google Chrome Labs. The app [repo](https://github.com/GoogleChromeLabs/squoosh) is open source and up to date with support for the latest file formats.
+
+For anyone who want to use the wasm modules underneath, there is an unofficial set of npm packages under [@jsquash/\*](https://github.com/jamsinclair/jSquash) that include the WASM modules with support for encoding, resizing, and decoding avif, jpeg, jxl, png and webp.
+
+In order to make WASM work on Fleek Functions, I needed to configure the rollup bundler in a specific way to inline dynamic imports and WASM modules. I created an independent repo so anyone who needs to use WASM in Fleek can find how: [Fleek Functions WebAssembly Starter Kit](https://github.com/BlossomLabs/fleek-function-wasm-starter).
+
+Using that configuration, I could import the wasm modules from jsquash, and use them in a fleek function that receives the image URI and the desired width, and converts it to the most efficient image type that is available for the requesting browser.
 
 ### Usage
 
@@ -26,10 +36,10 @@ If the `to` parameter is not provided, it will check the image types accepted by
 **Example:**
 
 ```
-https://image-optimizer.functions.on-fleek.app/https://cloudinary-marketing-res.cloudinary.com/image/upload/landmannalaugar_iceland.jpg/?w=500
+https://image-optimizer.functions.on-fleek.app/https://fleek.network/share-image.png/?w=500
 ```
 
-It converts a 18 MB PNG image to a 20 KB AVIF image and delivers it as a response.
+It converts a 260 kB PNG image to a 5.21 kB WEBP image and delivers it as a response that takes less than a second.
 
 ## Installation and Usage
 
