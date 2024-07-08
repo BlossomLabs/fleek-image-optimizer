@@ -12,7 +12,15 @@ type RequestObject = {
   body?: string | null;
 };
 
-export async function main(params: RequestObject) {
+type ResponseObject = {
+  status: number;
+  headers?: {
+    [key: string]: string;
+  } | null;
+  body: string;
+} | string | ArrayBuffer;
+
+export async function main(params: RequestObject): Promise<ResponseObject> {
   try {
     return optimize(processParams(params), check);
   } catch (error) {
